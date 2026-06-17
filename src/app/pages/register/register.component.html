@@ -1,0 +1,70 @@
+<div class="register-page">
+  <div class="register-card">
+
+    <div class="register-header">
+      <h1>Crear cuenta</h1>
+      <p>Únete y empieza a gestionar todo desde un único lugar</p>
+    </div>
+
+    <form class="register-form" (ngSubmit)="register()">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="email"
+          placeholder="ejemplo@email.com"
+          [(ngModel)]="email"
+          name="email"
+        />
+      </div>
+
+    <div class="input-group">
+      <label>Contraseña</label>
+
+      <div class="password-container">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="••••••••"
+          [(ngModel)]="password"
+          name="password"
+        />
+
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="showPassword = !showPassword"
+        >
+          <i
+            class="fas"
+            [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+          ></i>
+        </button>
+      </div>
+    </div>
+
+      <button
+        type="submit"
+        class="btn-register"
+      >
+        Crear cuenta
+      </button>
+
+    </form>
+
+    <div class="divider">
+      <span>o</span>
+    </div>
+
+    <div class="login-section">
+      <p>¿Ya tienes una cuenta?</p>
+
+      <a
+        routerLink="/"
+        class="login-link"
+      >
+        Iniciar sesión
+      </a>
+    </div>
+
+  </div>
+</div>

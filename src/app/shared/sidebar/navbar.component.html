@@ -1,0 +1,88 @@
+<nav class="navbar">
+  <div class="navbar__container">
+
+    <a
+      class="navbar__logo"
+    >
+      MiApp
+    </a>
+
+    <button
+      type="button"
+      class="navbar__toggle"
+      (click)="toggleMenu()"
+      aria-label="Abrir menú"
+    >
+      ☰
+    </button>
+
+    <ul
+      class="navbar__menu"
+      [class.navbar__menu--open]="menuOpen"
+    >
+      <li>
+        <a
+          routerLink="/dashboard/inicio"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMenu()"
+        >
+          Inicio
+        </a>
+      </li>
+
+      @if (profileService.profile()?.role === 'admin') {
+        <li>
+          <a
+            routerLink="/dashboard/usuarios"
+            routerLinkActive="active"
+            (click)="closeMenu()"
+          >
+            Usuarios
+          </a>
+        </li>
+      }
+
+      <li>
+        <a
+          routerLink="/proyectos"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+        >
+          Proyectos
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/blog"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+        >
+          Blog
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/contacto"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+        >
+          Contacto
+        </a>
+      </li>
+
+      <li>
+        <a
+          class="pointer"
+          (click)="logout()"
+        >
+          <i class="fas fa-power-off pointer"></i>
+        </a>
+      </li>
+
+    </ul>
+
+  </div>
+</nav>
