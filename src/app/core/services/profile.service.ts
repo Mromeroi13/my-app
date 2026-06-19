@@ -6,31 +6,38 @@ import { Profile } from '../models/profile.model';
 @Injectable({
   providedIn: 'root'
 })
+
+// La clase ProfileService proporciona métodos para manejar el perfil de usuario
 export class ProfileService {
 
-  profile = signal<Profile | null>(null);
+  profile = signal<Profile | null>(null); // Señal para almacenar el perfil de usuario
 
+  // Método para cargar el perfil de usuario desde Supabase
   async loadProfile(): Promise<Profile | null> {
 
+    // Obtener el usuario autenticado desde Supabase
     const { data: auth } =
       await supabase.auth.getUser();
 
+    // Si no hay un usuario autenticado, se establece el perfil como null y se retorna null
     if (!auth.user) {
       this.profile.set(null);
       return null;
     }
 
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', auth.user.id)
-      .single();
+    // Si hay un usuario autenticado, se realiza una consulta a la tabla 'profiles' en Supabase para obtener el perfil correspondiente al ID del usuario autenticado
+    const { data } = await supabase 
+      .from('profiles') // Seleccionar la tabla 'profiles' en Supabase
+      .select('*') // Seleccionar todos los campos del perfil
+      .eq('id', auth.user.id) // Filtrar por el ID del usuario autenticado
+      .single(); // Se espera que la consulta retorne un solo registro
 
-    this.profile.set(data);
+    this.profile.set(data); // Se establece el perfil obtenido en la señal 'profile'
 
     return data;
   }
 
+  // Método para limpiar el perfil de usuario, estableciendo la señal 'profile' como null
   clearProfile(): void {
     this.profile.set(null);
   }

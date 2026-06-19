@@ -21,7 +21,7 @@ import { ProfileService } from '../../core/services/profile.service';
 })
 export class NavbarComponent {
 
-  menuOpen = false;
+  menuOpen = false; // Variable para establecer que el menú está cerrado
 
   constructor(
     public profileService: ProfileService,
@@ -29,14 +29,17 @@ export class NavbarComponent {
     private router: Router
   ) {}
 
+  // Función para alternar el estado del menú
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
 
+  // Función para cerrar el menú
   closeMenu(): void {
     this.menuOpen = false;
   }
 
+  // Función para cerrar la sesión del usuario
   async logout() {
 
     await this.authService.signOut();

@@ -8,5 +8,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('my-app');
+  protected readonly title = signal('my-app'); // Variable de señal para almacenar el título de la aplicación, que puede ser utilizada en la plantilla para mostrar el nombre de la aplicación de manera reactiva
 }
