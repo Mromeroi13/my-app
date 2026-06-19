@@ -6,47 +6,133 @@
       <p>Únete y empieza a gestionar todo desde un único lugar</p>
     </div>
 
+    @if (errorMessage) {
+      <div class="alert error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="alert success">
+        {{ successMessage }}
+      </div>
+    }
+
     <form class="register-form" (ngSubmit)="register()">
 
+      <!-- EMAIL -->
       <div class="input-group">
         <label>Email</label>
+
         <input
           type="email"
           placeholder="ejemplo@email.com"
           [(ngModel)]="email"
           name="email"
+          required
         />
       </div>
 
-    <div class="input-group">
-      <label>Contraseña</label>
+      <!-- PASSWORD -->
+      <div class="input-group">
+        <label>Contraseña</label>
 
-      <div class="password-container">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          placeholder="••••••••"
-          [(ngModel)]="password"
-          name="password"
-        />
+        <div class="password-container">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="6"
+          />
 
-        <button
-          type="button"
-          class="toggle-password"
-          (click)="showPassword = !showPassword"
-        >
-          <i
-            class="fas"
-            [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-          ></i>
-        </button>
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showPassword = !showPassword"
+          >
+            <i
+              class="fas"
+              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            ></i>
+          </button>
+        </div>
+
+        @if (password?.length > 0 && password.length < 6) {
+          <div class="error">
+            La contraseña debe de tener mínimo 6 caracteres
+          </div>
+        }
+
+        <!-- PASSWORD STRENGTH -->
+        @if (password) {
+          <div class="password-strength">
+            <div class="bar">
+              <div
+                class="fill"
+                [ngClass]="passwordStrengthLabel.toLowerCase()"
+                [style.width.%]="passwordStrength * 20"
+              ></div>
+            </div>
+
+            <small class="strength-label">
+              {{ passwordStrengthLabel }}
+            </small>
+
+          </div>
+        }
       </div>
+
+  <!-- CONFIRM PASSWORD -->
+  <div class="input-group">
+    <label>Confirmar contraseña</label>
+
+    <div class="password-container">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        placeholder="••••••••"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        required
+      />
+
+      <button
+        type="button"
+        class="toggle-password"
+        (click)="showPassword = !showPassword"
+      >
+        <i
+          class="fas"
+          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+        ></i>
+      </button>
     </div>
 
+    @if (confirmPassword && password !== confirmPassword) {
+      <div class="error">
+        Las contraseñas no coinciden
+      </div>
+    }
+  </div>
+
+      <!-- BUTTON -->
       <button
         type="submit"
         class="btn-register"
+        [disabled]="
+          loading ||
+          !email ||
+          password.length < 6 ||
+          password !== confirmPassword
+        "
       >
-        Crear cuenta
+        @if (loading) {
+          <span class="spinner"></span>
+          Creando cuenta...
+        } @else {
+          Crear cuenta
+        }
       </button>
 
     </form>
@@ -58,10 +144,7 @@
     <div class="login-section">
       <p>¿Ya tienes una cuenta?</p>
 
-      <a
-        routerLink="/"
-        class="login-link"
-      >
+      <a routerLink="/" class="login-link">
         Iniciar sesión
       </a>
     </div>

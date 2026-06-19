@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,28 +17,79 @@ import { NgClass } from '@angular/common';
 })
 export class RegisterComponent {
 
-  email = ''; // Variable para almacenar el correo electrónico ingresado
-  password = ''; // Variable para almacenar la contraseña ingresada
-  showPassword = false; // Variable para controlar la visibilidad de la contraseña
+  email = '';
+  password = '';
+  showPassword = false;
+  confirmPassword = '';
 
-  // Constructor para inyectar los servicios necesarios
+  loading = false;
+  errorMessage = '';
+  successMessage = '';
+
   constructor(
     private auth: AuthService,
     private router: Router
   ) {}
 
+  // 🔐 Password strength simple
+  get passwordStrength(): number {
+    let score = 0;
 
-  // Método para registrar un nuevo usuario
-  async register() {
-    const { data, error } = await this.auth.signUp(this.email, this.password); // Llamada al método signUp del servicio AuthService para registrar un nuevo usuario
+    if (this.password.length >= 6) score++;
+    if (this.password.length >= 10) score++;
+    if (/[A-Z]/.test(this.password)) score++;
+    if (/[0-9]/.test(this.password)) score++;
+    if (/[^A-Za-z0-9]/.test(this.password)) score++;
 
-    if (error) {
-      alert(error.message);
+    return score; // 0 - 5
+  }
+
+  get passwordStrengthLabel(): string {
+    if (this.passwordStrength <= 1) return 'Débil';
+    if (this.passwordStrength <= 3) return 'Media';
+    return 'Fuerte';
+  }
+
+ async register() {
+  this.errorMessage = '';
+  this.successMessage = '';
+  this.loading = true;
+
+  try {
+    // validación frontend
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Las contraseñas no coinciden.';
       return;
     }
 
-    // Mostrar un mensaje de éxito y redirigir al usuario a la página de inicio de sesión
-    alert('Registro exitoso. Prueba iniciar sesión.');
-    this.router.navigate(['/']); // Redirigir al usuario a la página de inicio de sesión después de un registro exitoso
+    const { error } = await this.auth.signUp(this.email, this.password);
+
+    if (error) {
+      this.errorMessage = this.mapError(error.message);
+      return;
+    }
+
+    this.successMessage = 'Cuenta creada correctamente. Revisa tu email.';
+
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 1500);
+
+  } finally {
+    this.loading = false;
+  }
+}
+
+  private mapError(message: string): string {
+    if (message.includes('already registered')) {
+      return 'Este email ya está registrado.';
+    }
+    if (message.includes('password')) {
+      return 'La contraseña no es válida.';
+    }
+    if (message.includes('Invalid email')) {
+      return 'El email no es válido.';
+    }
+    return 'Ha ocurrido un error. Inténtalo de nuevo.';
   }
 }
