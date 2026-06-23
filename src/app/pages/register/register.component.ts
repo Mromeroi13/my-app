@@ -2,25 +2,26 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   imports: [
-    FormsModule,
-    RouterLink,
-    NgClass
+    FormsModule
   ]
 })
 export class RegisterComponent {
 
   email = '';
   password = '';
-  showPassword = false;
   confirmPassword = '';
+
+  firstName = '';
+  lastName1 = '';
+  lastName2 = '';
+
+  showPassword = false;
 
   loading = false;
   errorMessage = '';
@@ -31,7 +32,6 @@ export class RegisterComponent {
     private router: Router
   ) {}
 
-  // 🔐 Password strength simple
   get passwordStrength(): number {
     let score = 0;
 
@@ -41,7 +41,7 @@ export class RegisterComponent {
     if (/[0-9]/.test(this.password)) score++;
     if (/[^A-Za-z0-9]/.test(this.password)) score++;
 
-    return score; // 0 - 5
+    return score;
   }
 
   get passwordStrengthLabel(): string {
@@ -50,35 +50,60 @@ export class RegisterComponent {
     return 'Fuerte';
   }
 
- async register() {
-  this.errorMessage = '';
-  this.successMessage = '';
-  this.loading = true;
+  async register() {
 
-  try {
-    // validación frontend
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
-      return;
+    console.log('Botón pulsado');
+
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.loading = true;
+
+    try {
+
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Las contraseñas no coinciden.';
+        this.loading = false;
+        return;
+      }
+
+      const fullName =
+        `${this.firstName} ${this.lastName1} ${this.lastName2}`.trim();
+
+      const { error } = await this.auth.signUp(
+        this.email,
+        this.password,
+        {
+          first_name: this.firstName,
+          last_name_1: this.lastName1,
+          last_name_2: this.lastName2,
+          full_name: fullName
+        }
+      );
+
+      if (error) {
+        this.errorMessage = this.mapError(error.message);
+        return;
+      }
+
+      this.successMessage = 'Cuenta creada correctamente.';
+
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 1500);
+
+    } catch (err) {
+
+      console.error('REGISTER ERROR:', err);
+
+      this.errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'Error inesperado';
+
+    } finally {
+      this.loading = false;
     }
-
-    const { error } = await this.auth.signUp(this.email, this.password);
-
-    if (error) {
-      this.errorMessage = this.mapError(error.message);
-      return;
-    }
-
-    this.successMessage = 'Cuenta creada correctamente. Revisa tu email.';
-
-    setTimeout(() => {
-      this.router.navigate(['/']);
-    }, 1500);
-
-  } finally {
-    this.loading = false;
   }
-}
 
   private mapError(message: string): string {
     if (message.includes('already registered')) {

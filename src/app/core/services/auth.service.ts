@@ -13,10 +13,22 @@ export class AuthService {
   constructor() {}
 
   // El método signUp permite registrar un nuevo usuario con un correo electrónico y una contraseña
-  async signUp(email: string, password: string) {
+  async signUp(
+    email: string,
+    password: string,
+    profile: {
+      first_name: string;
+      last_name_1: string;
+      last_name_2: string;
+      full_name: string;
+    }
+  ) {
     return await supabase.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        data: profile
+      }
     });
   }
 

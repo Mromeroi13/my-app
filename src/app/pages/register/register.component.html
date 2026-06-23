@@ -20,112 +20,79 @@
 
     <form class="register-form" (ngSubmit)="register()">
 
-      <!-- EMAIL -->
-      <div class="input-group">
-        <label>Email</label>
+      <div class="form-row">
 
-        <input
-          type="email"
-          placeholder="ejemplo@email.com"
-          [(ngModel)]="email"
-          name="email"
-          required
-        />
-      </div>
-
-      <!-- PASSWORD -->
-      <div class="input-group">
-        <label>Contraseña</label>
-
-        <div class="password-container">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            placeholder="••••••••"
-            [(ngModel)]="password"
-            name="password"
-            required
-            minlength="6"
-          />
-
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="showPassword = !showPassword"
-          >
-            <i
-              class="fas"
-              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-            ></i>
-          </button>
+        <div class="input-group">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="Manuel" required />
         </div>
 
-        @if (password?.length > 0 && password.length < 6) {
-          <div class="error">
-            La contraseña debe de tener mínimo 6 caracteres
+        <div class="input-group">
+          <label>Primer apellido</label>
+          <input type="text" [(ngModel)]="lastName1" name="lastName1" placeholder="Romero" />
+        </div>
+
+        <div class="input-group">
+          <label>Segundo apellido</label>
+          <input type="text" [(ngModel)]="lastName2" name="lastName2" />
+        </div>
+
+      </div>
+
+      <div class="form-row">
+
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="email" name="email" required />
+        </div>
+
+        <div class="input-group">
+          <label>Contraseña</label>
+          <div class="password-container">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              name="password"
+              required
+              minlength="6"
+            />
+
+            <button type="button" class="toggle-password"
+              (click)="showPassword = !showPassword">
+              👁
+            </button>
           </div>
-        }
+        </div>
 
-        <!-- PASSWORD STRENGTH -->
-        @if (password) {
-          <div class="password-strength">
-            <div class="bar">
-              <div
-                class="fill"
-                [ngClass]="passwordStrengthLabel.toLowerCase()"
-                [style.width.%]="passwordStrength * 20"
-              ></div>
-            </div>
+        <div class="input-group">
+          <label>Confirmar contraseña</label>
+          <div class="password-container">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              required
+            />
 
-            <small class="strength-label">
-              {{ passwordStrengthLabel }}
+            <button type="button" class="toggle-password"
+              (click)="showPassword = !showPassword">
+              👁
+            </button>
+          </div>
+
+          @if (confirmPassword && password !== confirmPassword) {
+            <small class="error">
+              Las contraseñas no coinciden
             </small>
+          }
+        </div>
 
-          </div>
-        }
       </div>
 
-  <!-- CONFIRM PASSWORD -->
-  <div class="input-group">
-    <label>Confirmar contraseña</label>
-
-    <div class="password-container">
-      <input
-        [type]="showPassword ? 'text' : 'password'"
-        placeholder="••••••••"
-        [(ngModel)]="confirmPassword"
-        name="confirmPassword"
-        required
-      />
-
-      <button
-        type="button"
-        class="toggle-password"
-        (click)="showPassword = !showPassword"
-      >
-        <i
-          class="fas"
-          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-        ></i>
-      </button>
-    </div>
-
-    @if (confirmPassword && password !== confirmPassword) {
-      <div class="error">
-        Las contraseñas no coinciden
-      </div>
-    }
-  </div>
-
-      <!-- BUTTON -->
       <button
         type="submit"
         class="btn-register"
-        [disabled]="
-          loading ||
-          !email ||
-          password.length < 6 ||
-          password !== confirmPassword
-        "
+        [disabled]="loading || password !== confirmPassword"
       >
         @if (loading) {
           <span class="spinner"></span>
@@ -136,18 +103,6 @@
       </button>
 
     </form>
-
-    <div class="divider">
-      <span>o</span>
-    </div>
-
-    <div class="login-section">
-      <p>¿Ya tienes una cuenta?</p>
-
-      <a routerLink="/" class="login-link">
-        Iniciar sesión
-      </a>
-    </div>
 
   </div>
 </div>
