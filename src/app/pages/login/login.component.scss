@@ -207,9 +207,24 @@
 /* Divider */
 
 .divider {
-  margin: 24px 0;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+
+  margin: 26px 0;
+
+  color: rgba(255,255,255,.5);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,.15);
+  }
+
+  span {
+    padding: 0 12px;
+  }
 }
 
 /* Registro */
@@ -302,4 +317,19 @@
   .login-header h1 {
     font-size: 1.7rem;
   }
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

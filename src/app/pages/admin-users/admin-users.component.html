@@ -136,8 +136,14 @@
 
             </th>
 
-            <th>
+            <th class="sortable" (click)="changeSort('full_name')">
               Nombre
+
+              @if (sortField === 'full_name') {
+                <span>
+                  {{ ascending ? '▲' : '▼' }}
+                </span>
+              }
             </th>
 
             <th>
@@ -377,24 +383,6 @@
         </button>
 
       </div>
-
-    </div>
-
-  </div>
-
-}
-
-@if (toastVisible()) {
-
-  <div class="toast-notification">
-
-    <div class="toast-icon">
-      ✓
-    </div>
-
-    <div class="toast-content">
-
-      {{ toastMessage() }}
 
     </div>
 

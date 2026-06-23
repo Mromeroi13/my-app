@@ -4,4 +4,5 @@ export interface Profile {
   email: string;
   role: 'user' | 'admin';
   full_name: string;
+  avatar_url?: string;
 }

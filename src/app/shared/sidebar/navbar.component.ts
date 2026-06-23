@@ -8,13 +8,16 @@ import {
 
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    CommonModule
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'

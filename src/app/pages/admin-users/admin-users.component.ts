@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  signal
+  signal,
+  inject
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -12,6 +13,8 @@ import { AdminUsersService } from '../../core/services/admin-users.service';
 import { AdminUser } from '../../core/models/admin-user.model';
 import { UserFilters } from '../../core/models/user-filters.model';
 import { UserRole } from '../../core/models/user-role.enum';
+
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-admin-users',
@@ -25,6 +28,7 @@ import { UserRole } from '../../core/models/user-role.enum';
 })
 export class AdminUsersComponent implements OnInit {
 
+  private toast = inject(HotToastService); // Toast para las notificacione
   readonly pageSize = 10; // Tamaño de página fijo para la paginación
 
   users = signal<AdminUser[]>([]); // Señal para almacenar la lista de usuarios
@@ -39,9 +43,6 @@ export class AdminUsersComponent implements OnInit {
   adminCount = signal(0); // Señal para almacenar el número de usuarios administradores
   userCount = signal(0); // Señal para almacenar el número de usuarios normales
 
-  toastVisible = signal(false); // Señal para indicar si el mensaje de notificación (toast) está visible
-  toastMessage = signal(''); // Señal para almacenar el mensaje de notificación (toast)
-
   // Filtros de búsqueda para los usuarios
   filters: UserFilters = {
     email: '',
@@ -50,7 +51,7 @@ export class AdminUsersComponent implements OnInit {
     dateTo: ''
   };
 
-  sortField: 'email' | 'created_at' = 'created_at'; // Campo por el cual se ordenarán los usuarios
+  sortField: 'email' | 'created_at' | 'full_name' = 'created_at'; // Campo por el cual se ordenarán los usuarios
   ascending = false; // Indica si el ordenamiento es ascendente o descendente
 
   // Lista de roles de usuario disponibles
@@ -174,7 +175,7 @@ export class AdminUsersComponent implements OnInit {
 
   // Cambia el campo de ordenamiento y la dirección (ascendente/descendente) y recarga la lista de usuarios
   async changeSort(
-    field: 'email' | 'created_at'
+    field: 'email' | 'created_at' | 'full_name'
   ): Promise<void> {
 
     if (this.sortField === field) {
@@ -295,7 +296,7 @@ export class AdminUsersComponent implements OnInit {
 
       this.closeEditModal();
       
-      this.showToast(
+      this.toast.success(
         'Usuario modificado correctamente'
       );
 
@@ -303,27 +304,11 @@ export class AdminUsersComponent implements OnInit {
 
     } catch (error) {
 
-      console.error(
-        'Error actualizando usuario:',
-        error
+      this.toast.error(
+        'Error actualizando usuario'
       );
 
     }
-
-  }
-
-  // Función para mostrar un mensaje de notificación (toast) durante 3 segundos, estableciendo el mensaje y la visibilidad del toast
-  showToast(message: string): void {
-
-    this.toastMessage.set(message);
-
-    this.toastVisible.set(true);
-
-    setTimeout(() => {
-
-      this.toastVisible.set(false);
-
-    }, 3000);
 
   }
 
@@ -354,15 +339,15 @@ export class AdminUsersComponent implements OnInit {
       await this.loadUsers();
       await this.loadStats();
 
-      this.showToast(
+      this.toast.success(
         'Usuario eliminado correctamente'
       );
 
     } catch (error) {
 
       console.error('Error eliminando usuario:', error);
-
-      this.showToast(
+      
+      this.toast.error(
         'Error al eliminar el usuario'
       );
 

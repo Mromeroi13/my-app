@@ -19,7 +19,7 @@ export class AdminUsersService {
   async getUsers(
     page: number,
     filters?: UserFilters,
-    sortField: 'email' | 'created_at' = 'created_at',
+    sortField: 'email' | 'created_at' | 'full_name' = 'created_at',
     ascending = false
   ): Promise<{
     users: AdminUser[];

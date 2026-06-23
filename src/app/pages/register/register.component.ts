@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   imports: [
-    FormsModule
+    FormsModule,
+    NgClass,
+    RouterLink
   ]
 })
 export class RegisterComponent {
+
+  private toast = inject(HotToastService); // Para el toast
 
   email = '';
   password = '';
@@ -25,7 +32,6 @@ export class RegisterComponent {
 
   loading = false;
   errorMessage = '';
-  successMessage = '';
 
   constructor(
     private auth: AuthService,
@@ -55,7 +61,6 @@ export class RegisterComponent {
     console.log('Botón pulsado');
 
     this.errorMessage = '';
-    this.successMessage = '';
     this.loading = true;
 
     try {
@@ -81,11 +86,20 @@ export class RegisterComponent {
       );
 
       if (error) {
-        this.errorMessage = this.mapError(error.message);
-        return;
-      }
 
-      this.successMessage = 'Cuenta creada correctamente.';
+      const message =
+        this.mapError(error.message);
+
+      this.errorMessage = message;
+
+      this.toast.error(message);
+
+      return;
+    }
+
+      this.toast.success(
+        'Cuenta creada correctamente'
+      );
 
       setTimeout(() => {
         this.router.navigate(['/']);
@@ -93,12 +107,14 @@ export class RegisterComponent {
 
     } catch (err) {
 
-      console.error('REGISTER ERROR:', err);
+     const message =
+      err instanceof Error
+        ? err.message
+        : 'Error inesperado';
 
-      this.errorMessage =
-        err instanceof Error
-          ? err.message
-          : 'Error inesperado';
+    this.errorMessage = message;
+
+    this.toast.error(message);
 
     } finally {
       this.loading = false;

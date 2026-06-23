@@ -41,12 +41,22 @@
       </div>
     </div>
 
-      <button
-        type="submit"
-        class="btn-login"
-      >
+    <button
+      type="submit"
+      class="btn-login"
+      [disabled]="loading"
+    >
+      @if (loading) {
+
+        <span class="spinner"></span>
+        Iniciando sesión...
+
+      } @else {
+
         Iniciar sesión
-      </button>
+
+      }
+    </button>
     </form>
 
     <div class="divider">
