@@ -40,47 +40,34 @@ export class LoginComponent {
 
   // Método para iniciar sesión
   async login(): Promise<void> {
-
     this.loading = true;
 
     try {
-
-      const { error } =
-        await this.auth.signIn(
-          this.email,
-          this.password
-        );
+      const { error } = await this.auth.signIn(this.email, this.password);
 
       if (error) {
-
-        this.toast.error(
-          'Email o contraseña incorrectos'
-        );
-
+        this.toast.error('Email o contraseña incorrectos');
         return;
-
       }
 
-      this.toast.success(
-        'Sesión iniciada correctamente'
-      );
-      
-      await this.profileService.loadProfile(); // Cargar el perfil del usuario después de iniciar sesión
+      const profile = await this.profileService.loadProfile();
+
+      if (profile?.deleted) {
+        await this.auth.signOut();
+        this.toast.error('Esta cuenta ha sido desactivada');
+        return;
+      }
+
+      this.toast.success('Sesión iniciada correctamente');
+
       await this.router.navigate(['/dashboard/inicio']);
 
     } catch (error) {
-
       console.error(error);
-
-      this.toast.error(
-        'Ha ocurrido un error'
-      );
+      this.toast.error('Ha ocurrido un error');
 
     } finally {
-
       this.loading = false;
-
     }
-
   }
 }

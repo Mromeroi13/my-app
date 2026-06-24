@@ -5,4 +5,5 @@ export interface Profile {
   role: 'user' | 'admin';
   full_name: string;
   avatar_url?: string;
+  deleted: boolean;
 }

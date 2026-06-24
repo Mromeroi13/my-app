@@ -1,0 +1,42 @@
+<div class="backdrop" (click)="close()">
+
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="close()">✕</button>
+
+    <h2>Elige un avatar</h2>
+
+    @if (loading()) {
+
+      <div class="loading">
+        Cargando avatares...
+      </div>
+
+    } @else {
+
+      @if (avatars().length > 0) {
+
+        <div class="grid">
+
+          @for (avatar of avatars(); track avatar.id) {
+            <img
+              [src]="avatar.url"
+              (click)="pick(avatar.url)"
+            />
+          }
+
+        </div>
+
+      } @else {
+
+        <div class="empty">
+          No hay avatares disponibles
+        </div>
+
+      }
+
+    }
+
+  </div>
+
+</div>

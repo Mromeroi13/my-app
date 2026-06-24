@@ -1,39 +1,24 @@
 <div class="modal-backdrop" (click)="close()">
 
-  <div
-    class="modal"
-    (click)="$event.stopPropagation()"
-  >
+  <div class="modal" (click)="$event.stopPropagation()">
 
     <form (ngSubmit)="save()">
 
       <h2>Editar perfil</h2>
 
+      <!-- AVATAR PREVIEW -->
       <div class="avatar-section">
 
         <img
-          [src]="avatarUrl || 'assets/img/default-avatar.png'"
+          [src]="selectedAvatarUrl || 'assets/img/default-avatar.png'"
           alt="Avatar"
-        />
-
-        <label
-          for="avatar-upload"
-          class="upload-btn"
-        >
-          <i class="fas fa-camera"></i>
-          Cambiar foto
-        </label>
-
-        <input
-          id="avatar-upload"
-          type="file"
-          accept="image/*"
-          (change)="onFileSelected($event)"
-          hidden
+          (click)="openAvatarModal()"
+          class="clickable-avatar"
         />
 
       </div>
 
+      <!-- INPUTS -->
       <div class="input-group">
         <label>Nombre</label>
 
@@ -54,18 +39,14 @@
         />
       </div>
 
+      <!-- ACTIONS -->
       <div class="actions">
 
-        <button
-          type="button"
-          (click)="close()"
-        >
+        <button type="button" (click)="close()">
           Cancelar
         </button>
 
-        <button
-          type="submit"
-        >
+        <button type="submit">
           Guardar
         </button>
 
@@ -76,3 +57,10 @@
   </div>
 
 </div>
+
+@if (showAvatarModal) {
+  <app-avatar-picker-modal
+    (closeModal)="showAvatarModal = false"
+    (select)="onAvatarSelected($event)"
+  ></app-avatar-picker-modal>
+}

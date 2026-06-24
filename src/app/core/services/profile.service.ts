@@ -41,40 +41,7 @@ export class ProfileService {
   clearProfile(): void {
     this.profile.set(null);
   }
-
- // Método para atualizar la foto de perfil del usuario
-  async uploadAvatar(
-    userId: string,
-    file: File
-  ): Promise<string> {
-
-    const extension =
-      file.name.split('.').pop();
-
-    const fileName =
-      `${userId}-${Date.now()}.${extension}`;
-
-    const { error } = await supabase.storage
-      .from('avatars')
-      .upload(
-        fileName,
-        file,
-        {
-          upsert: true
-        }
-      );
-
-    if (error) {
-      throw error;
-    }
-
-    const { data } = supabase.storage
-      .from('avatars')
-      .getPublicUrl(fileName);
-
-    return data.publicUrl;
-  }
-  
+ 
   // Método para actualizar el perfil
   async updateProfile(
     id: string,
