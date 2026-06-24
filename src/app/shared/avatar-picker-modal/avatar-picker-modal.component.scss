@@ -112,3 +112,15 @@ h2 {
   align-items: center;
   min-height: 120px;
 }
+
+.title-separator {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 12px 0 20px;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
