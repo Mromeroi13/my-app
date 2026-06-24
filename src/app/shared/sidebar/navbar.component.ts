@@ -9,6 +9,7 @@ import {
 import { AuthService } from '../../core/services/auth.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { CommonModule } from '@angular/common';
+import { EditProfileModalComponent } from '../edit-profile-modal/edit-profile-modal.component';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     RouterLink,
     RouterLinkActive,
-    CommonModule
+    CommonModule,
+    EditProfileModalComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -26,11 +28,24 @@ export class NavbarComponent {
 
   menuOpen = false; // Variable para establecer que el menú está cerrado
 
+  showProfileModal = false; // Variable para ver el modal
+
   constructor(
     public profileService: ProfileService,
     private authService: AuthService,
     private router: Router
   ) {}
+
+  // Abrir el modal del perfil
+  openProfileModal(): void {
+    this.showProfileModal = true;
+  }
+
+  // Cerrar el modal del perfil
+  closeProfileModal(): void {
+    this.showProfileModal = false;
+  }
+
 
   // Función para alternar el estado del menú
   toggleMenu(): void {

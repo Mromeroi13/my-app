@@ -1,7 +1,10 @@
 <nav class="navbar">
   <div class="navbar__container">
 
-    <div class="navbar__user">
+    <div
+      class="navbar__user"
+      (click)="openProfileModal()"
+    >
       <img
         class="navbar__avatar-img"
         [src]="profileService.profile()?.avatar_url || 'assets/img/default-avatar.png'"
@@ -92,3 +95,9 @@
 
   </div>
 </nav>
+
+@if (showProfileModal) {
+  <app-edit-profile-modal
+    (closeModal)="closeProfileModal()"
+  />
+}

@@ -1,0 +1,78 @@
+<div class="modal-backdrop" (click)="close()">
+
+  <div
+    class="modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <form (ngSubmit)="save()">
+
+      <h2>Editar perfil</h2>
+
+      <div class="avatar-section">
+
+        <img
+          [src]="avatarUrl || 'assets/img/default-avatar.png'"
+          alt="Avatar"
+        />
+
+        <label
+          for="avatar-upload"
+          class="upload-btn"
+        >
+          <i class="fas fa-camera"></i>
+          Cambiar foto
+        </label>
+
+        <input
+          id="avatar-upload"
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          hidden
+        />
+
+      </div>
+
+      <div class="input-group">
+        <label>Nombre</label>
+
+        <input
+          type="text"
+          [(ngModel)]="fullName"
+          name="fullName"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+        />
+      </div>
+
+      <div class="actions">
+
+        <button
+          type="button"
+          (click)="close()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+        >
+          Guardar
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
