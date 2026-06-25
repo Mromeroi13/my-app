@@ -42,6 +42,14 @@ export class AdminUsersService {
       );
     }
 
+    // Bucar por nombre completo
+    if (filters?.full_name?.trim()) {
+      query = query.ilike(
+        'full_name',
+        `%${filters.full_name.trim()}%`
+      );
+    }
+
     // Filtrar por rol
     if (filters?.role?.trim()) {
       query = query.eq(
@@ -119,6 +127,9 @@ export class AdminUsersService {
       full_name?: string;
       email?: string;
       role?: string;
+      first_name: string;
+      last_name_1: string;
+      last_name_2: string;
     }
   ): Promise<AdminUser> {
 

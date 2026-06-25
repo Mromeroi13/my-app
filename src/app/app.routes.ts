@@ -6,6 +6,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import {AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+
 
 import { roleGuard } from './core/guards/role.guard';
 import { authGuard } from './core/guards/auth.guard';
@@ -20,6 +22,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   },
 
   // Dashboard

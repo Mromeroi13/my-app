@@ -13,6 +13,7 @@ import { AdminUsersService } from '../../core/services/admin-users.service';
 import { AdminUser } from '../../core/models/admin-user.model';
 import { UserFilters } from '../../core/models/user-filters.model';
 import { UserRole } from '../../core/models/user-role.enum';
+import { ProfileService } from '../../core/services/profile.service';
 
 import { HotToastService } from '@ngxpert/hot-toast';
 
@@ -27,6 +28,7 @@ import { HotToastService } from '@ngxpert/hot-toast';
   styleUrls: ['./admin-users.component.scss']
 })
 export class AdminUsersComponent implements OnInit {
+  
 
   private toast = inject(HotToastService); // Toast para las notificacione
   readonly pageSize = 10; // Tamaño de página fijo para la paginación
@@ -46,6 +48,7 @@ export class AdminUsersComponent implements OnInit {
   // Filtros de búsqueda para los usuarios
   filters: UserFilters = {
     email: '',
+    full_name: "",
     role: '',
     dateFrom: '',
     dateTo: ''
@@ -70,14 +73,19 @@ export class AdminUsersComponent implements OnInit {
 
   // Formulario de edición de usuario
   editForm: {
-    full_name: string;
-    email: string;
-    role: UserRole;
+  first_name: string;
+  last_name_1: string;
+  last_name_2: string;
+  email: string;
+  role: UserRole;
   } = {
-    full_name: '',
+    first_name: '',
+    last_name_1: '',
+    last_name_2: '',
     email: '',
     role: UserRole.USER
   };
+
 
   constructor(
     private adminUsersService: AdminUsersService
@@ -162,6 +170,7 @@ export class AdminUsersComponent implements OnInit {
 
     this.filters = {
       email: '',
+      full_name: '',
       role: '',
       dateFrom: '',
       dateTo: ''
@@ -255,7 +264,9 @@ export class AdminUsersComponent implements OnInit {
 
     // Inicializa el formulario de edición con los datos del usuario seleccionado, utilizando valores predeterminados si algunos campos son nulos
     this.editForm = {
-      full_name: user.full_name ?? '',
+      first_name: user.first_name ?? '',
+      last_name_1: user.last_name_1 ?? '',
+      last_name_2: user.last_name_2 ?? '',
       email: user.email ?? '',
       role: user.role
     };
@@ -288,7 +299,9 @@ export class AdminUsersComponent implements OnInit {
       await this.adminUsersService.updateUser(
         user.id,
         {
-          full_name: this.editForm.full_name,
+          first_name: this.editForm.first_name,
+          last_name_1: this.editForm.last_name_1,
+          last_name_2: this.editForm.last_name_2,
           email: this.editForm.email,
           role: this.editForm.role
         }
@@ -301,6 +314,9 @@ export class AdminUsersComponent implements OnInit {
       );
 
       await this.loadUsers();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
 
     } catch (error) {
 
@@ -310,6 +326,16 @@ export class AdminUsersComponent implements OnInit {
 
     }
 
+  }
+
+    getFullName(user: AdminUser): string {
+    return [
+      user.first_name,
+      user.last_name_1,
+      user.last_name_2
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 
   // Función para cerrar el modal de confirmación de eliminación de usuario y restablecer el usuario seleccionado para eliminación

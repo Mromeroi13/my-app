@@ -39,25 +39,48 @@
     </div>
 
     <div class="filter-group">
-      <label for="role">
-        Rol
+      <label>
+        Roles
       </label>
 
-      <select
-        id="role"
-        [(ngModel)]="filters.role">
+      <div class="role-selector">
+        
+        <button
+          type="button"
+          class="role-chip"
+          [class.active]="filters.role === ''"
+          (click)="filters.role = ''">
 
-        <option value="">
           Todos
-        </option>
+
+        </button>
 
         @for (role of roles; track role) {
-          <option [value]="role">
-            {{ role }}
-          </option>
+          <button
+            type="button"
+            class="role-chip"
+            [class.active]="filters.role === role"
+            (click)="filters.role = role">
+
+            {{ role.charAt(0).toUpperCase() + role.slice(1) }}
+
+          </button>
         }
 
-      </select>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label for="fullName">
+        Buscar por nombre
+      </label>
+
+      <input
+        id="fullName"
+        type="text"
+        [(ngModel)]="filters.full_name"
+        (keydown.enter)="applyFilters()"
+        placeholder="Nombre completo">
     </div>
 
     <div class="filter-group">
@@ -186,7 +209,7 @@
               </td>
 
               <td>
-                {{ user.full_name || '-' }}
+                {{ getFullName(user) || '-' }}
               </td>
 
               <td>
@@ -196,7 +219,7 @@
                   [class.admin]="user.role === 'admin'"
                   [class.user]="user.role === 'user'">
 
-                  {{ user.role }}
+                    {{ user.role | titlecase }}
 
                 </span>
 
@@ -317,13 +340,37 @@
 
         <div class="form-group">
 
+  <label>
+    Nombre
+  </label>
+
+  <input
+    type="text"
+    [(ngModel)]="editForm.first_name">
+
+        </div>
+
+        <div class="form-group">
+
           <label>
-            Nombre completo
+            Primer apellido
           </label>
 
           <input
             type="text"
-            [(ngModel)]="editForm.full_name">
+            [(ngModel)]="editForm.last_name_1">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+            Segundo apellido
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editForm.last_name_2">
 
         </div>
 
@@ -335,31 +382,27 @@
 
           <input
             type="email"
-            [(ngModel)]="editForm.email">
+            [(ngModel)]="editForm.email"
+            disabled="">
 
         </div>
 
         <div class="form-group">
+          <label>Rol</label>
 
-          <label>
-            Rol
-          </label>
-
-          <select
-            [(ngModel)]="editForm.role">
-
+          <div class="role-selector">
             @for (role of roles; track role) {
+              <button
+                type="button"
+                class="role-chip"
+                [class.active]="editForm.role === role"
+                (click)="editForm.role = role">
 
-              <option [value]="role">
+                {{ role.charAt(0).toUpperCase() + role.slice(1) }}
 
-                {{ role }}
-
-              </option>
-
+              </button>
             }
-
-          </select>
-
+          </div>
         </div>
 
       </div>
@@ -408,7 +451,7 @@
 
       <div class="modal-body">
 
-        <p>
+        <p class="white">
           ¿Estás seguro de que quieres eliminar a
           <strong>{{ userToDelete()?.email }}</strong>?
         </p>

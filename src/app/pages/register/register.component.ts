@@ -29,6 +29,7 @@ export class RegisterComponent {
   lastName2 = '';
 
   showPassword = false;
+  showConfirmPassword = false;
 
   loading = false;
   errorMessage = '';

@@ -61,4 +61,22 @@ export class AuthService {
     const user = await this.getUser();
     return !!user;
   }
+
+  // Método para enviar correo de cambio de  contraseña
+  async resetPassword(email: string) {
+    return await supabase.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo: 'https://my-app-zeta-wheat-61.vercel.app/reset-password'
+      }
+    );
+  }
+
+  // Método para actualizar la contraseña
+  async updatePassword(password: string) {
+    return await supabase.auth.updateUser({
+      password
+    });
+  }
+
 }

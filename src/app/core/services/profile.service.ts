@@ -49,6 +49,9 @@ export class ProfileService {
       full_name: string;
       email: string;
       avatar_url: string;
+      first_name: string;
+      last_name_1: string;
+      last_name_2: string;
     }
   ): Promise<void> {
 

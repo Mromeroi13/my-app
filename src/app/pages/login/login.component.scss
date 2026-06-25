@@ -333,3 +333,24 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+.forgot-password {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+.forgot-link {
+  background: transparent;
+  border: none;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: .9rem;
+  padding: 0;
+
+  &:hover {
+    color: white;
+    text-decoration: underline;
+  }
+}

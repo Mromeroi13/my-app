@@ -27,7 +27,9 @@ export class EditProfileModalComponent implements OnInit {
 
   @Output() closeModal = new EventEmitter<void>();
 
-  fullName = '';
+  firstName = '';
+  lastName1 = '';
+  lastName2 = '';
   email = '';
   avatarUrl = '';
 
@@ -45,7 +47,9 @@ export class EditProfileModalComponent implements OnInit {
 
     if (!profile) return;
 
-    this.fullName = profile.full_name;
+    this.firstName = profile.first_name;
+    this.lastName1 = profile.last_name_1;
+    this.lastName2 = profile.last_name_2 ?? '';
     this.email = profile.email;
 
     this.avatarUrl = profile.avatar_url ?? '';
@@ -70,7 +74,10 @@ export class EditProfileModalComponent implements OnInit {
     try {
 
       await this.profileService.updateProfile(profile.id, {
-        full_name: this.fullName,
+        first_name: this.firstName,
+        last_name_1: this.lastName1,
+        last_name_2: this.lastName2,
+        full_name: `${this.firstName} ${this.lastName1} ${this.lastName2}`.trim(),
         email: this.email,
         avatar_url: this.selectedAvatarUrl
       });

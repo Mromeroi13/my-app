@@ -70,4 +70,32 @@ export class LoginComponent {
       this.loading = false;
     }
   }
+
+  async resetPassword(): Promise<void> {
+
+  if (!this.email) {
+    this.toast.error('Introduce tu email para resetear la contraseña');
+    return;
+  }
+
+  try {
+
+    const { error } = await this.auth.resetPassword(this.email);
+
+    if (error) {
+      this.toast.error('No se pudo enviar el correo');
+      return;
+    }
+
+    this.toast.success(
+      'Te hemos enviado un correo para restablecer tu contraseña'
+    );
+
+  } catch (error) {
+
+    console.error(error);
+    this.toast.error('Ha ocurrido un error');
+
+  }
+}
 }

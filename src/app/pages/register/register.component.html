@@ -70,7 +70,7 @@
           <label>Confirmar contraseña *</label>
           <div class="password-container">
             <input
-              [type]="showPassword ? 'text' : 'password'"
+              [type]="showConfirmPassword ? 'text' : 'password'"
               [(ngModel)]="confirmPassword"
               name="confirmPassword"
               placeholder="••••••••"
@@ -80,11 +80,11 @@
             <button
               type="button"
               class="toggle-password"
-              (click)="showPassword = !showPassword"
+              (click)="showConfirmPassword = !showConfirmPassword"
             >
               <i
                 class="fas"
-                [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                [ngClass]="showConfirmPassword  ? 'fa-eye-slash' : 'fa-eye'"
               ></i>
             </button>
           </div>

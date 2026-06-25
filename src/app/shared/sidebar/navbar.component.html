@@ -12,8 +12,8 @@
       />
 
       <a class="navbar__logo">
-        {{ profileService.profile()?.full_name || 'usuario' }}
-      </a>
+      {{ getProfileName() }}
+    </a>
     </div>
 
     <button

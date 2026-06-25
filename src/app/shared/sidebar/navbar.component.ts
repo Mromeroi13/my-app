@@ -71,4 +71,21 @@ export class NavbarComponent {
       }
     );
   }
+
+  getProfileName(): string {
+
+    const profile = this.profileService.profile();
+
+    if (!profile) {
+      return 'usuario';
+    }
+
+    return [
+      profile.first_name,
+      profile.last_name_1,
+      profile.last_name_2
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }
 }

@@ -98,20 +98,47 @@
   margin-bottom: 8px;
 }
 
+.modal-divider {
+  border: none;
+
+  height: 2px;
+
+  margin: 0 0 24px;
+
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .input-group input {
   height: 54px;
 
   padding: 0 16px;
 
-  border-radius: 12px;
-
-  border: 1px solid rgba(255,255,255,.15);
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
 
   background: rgba(255,255,255,.08);
 
   color: white;
 
-  transition: all .3s ease;
+  font-size: 0.95rem;
+
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+
+.input-group input:disabled {
+  background: rgba(107, 114, 128, 0.15);
+  border-color: rgba(107, 114, 128, 0.3);
+
+  color: #d1d5db;
+
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .input-group input::placeholder {
