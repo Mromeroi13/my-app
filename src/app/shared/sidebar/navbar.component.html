@@ -3,17 +3,23 @@
 
     <div
       class="navbar__user"
-      (click)="openProfileModal()"
-    >
+      (click)="openProfileModal()">
+
       <img
         class="navbar__avatar-img"
         [src]="profileService.profile()?.avatar_url || 'assets/img/default-avatar.png'"
-        alt="Avatar"
-      />
+        alt="Avatar">
 
-      <a class="navbar__logo">
-      {{ getProfileName() }}
-    </a>
+      <div class="navbar__user-info">
+        <span class="navbar__name">
+          {{ getProfileName() }}
+        </span>
+
+        <span class="navbar__role">
+          {{ profileService.profile()?.role | titlecase }}
+        </span>
+      </div>
+
     </div>
 
     <button
@@ -36,21 +42,10 @@
           [routerLinkActiveOptions]="{ exact: true }"
           (click)="closeMenu()"
         >
-          Inicio
+          <i class="fas fa-house"></i>
         </a>
       </li>
 
-      @if (profileService.profile()?.role === 'admin') {
-        <li>
-          <a
-            routerLink="/dashboard/usuarios"
-            routerLinkActive="active"
-            (click)="closeMenu()"
-          >
-            Usuarios
-          </a>
-        </li>
-      }
 
       <li>
         <a
@@ -81,6 +76,19 @@
           Contacto
         </a>
       </li>
+
+      @if (profileService.profile()?.role === 'admin') {
+        <li>
+          <a
+            routerLink="/dashboard/usuarios"
+            routerLinkActive="active"
+            (click)="closeMenu()">
+
+            <i class="fas fa-users"></i>
+
+          </a>
+        </li>
+      }
 
       <li>
         <a

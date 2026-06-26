@@ -86,6 +86,31 @@ export class AdminUsersComponent implements OnInit {
     role: UserRole.USER
   };
 
+  // Para la paginación
+  visiblePages(): number[] {
+
+    const total = this.totalPages();
+    const current = this.currentPage();
+
+    let start = Math.max(1, current - 2);
+    let end = Math.min(total, current + 2);
+
+    if (end - start < 4) {
+
+      if (start === 1) {
+        end = Math.min(total, start + 4);
+      } else {
+        start = Math.max(1, end - 4);
+      }
+
+    }
+
+    return Array.from(
+      { length: end - start + 1 },
+      (_, i) => start + i
+    );
+
+  }
 
   constructor(
     private adminUsersService: AdminUsersService
@@ -378,5 +403,16 @@ export class AdminUsersComponent implements OnInit {
       );
 
     }
+  }
+  
+  // Pginación
+  goToPage(page: number): void {
+
+    if (page < 1 || page > this.totalPages()) {
+      return;
+    }
+
+    this.currentPage.set(page);
+    this.loadUsers();
   }
 }

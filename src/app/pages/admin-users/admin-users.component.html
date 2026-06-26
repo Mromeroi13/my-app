@@ -287,29 +287,44 @@
     <div class="pagination-container">
 
       <button
-        class="btn-secondary"
+        class="page-btn"
         [disabled]="currentPage() === 1"
-        (click)="previousPage()">
-
-        ←
-
+        (click)="goToPage(1)">
+        «
       </button>
 
-      <span class="page-info">
+      <button
+        class="page-btn"
+        [disabled]="currentPage() === 1"
+        (click)="previousPage()">
+        ‹
+      </button>
 
-        Página {{ currentPage() }}
-        de
-        {{ totalPages() }}
+      @for (page of visiblePages(); track page) {
 
-      </span>
+        <button
+          class="page-btn"
+          [class.active]="page === currentPage()"
+          (click)="goToPage(page)">
+
+          {{ page }}
+
+        </button>
+
+      }
 
       <button
-        class="btn-secondary"
+        class="page-btn"
         [disabled]="currentPage() === totalPages()"
         (click)="nextPage()">
+        ›
+      </button>
 
-        →
-
+      <button
+        class="page-btn"
+        [disabled]="currentPage() === totalPages()"
+        (click)="goToPage(totalPages())">
+        »
       </button>
 
     </div>

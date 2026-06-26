@@ -170,3 +170,90 @@
 .navbar__user {
   cursor: pointer;
 }
+
+.navbar__user{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:8px 14px;
+    border-radius:14px;
+    transition:.25s;
+}
+
+.navbar__user:hover{
+    background:rgba(255,255,255,.06);
+}
+
+.navbar__user-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.navbar__name{
+    color:white;
+    font-weight:700;
+}
+
+.navbar__role{
+    color:#94a3b8;
+    font-size:.8rem;
+}
+
+.navbar__avatar-img{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,.15);
+
+    transition:.25s;
+}
+
+.navbar__user:hover .navbar__avatar-img{
+
+    border-color:#60a5fa;
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 20px rgba(96,165,250,.4);
+
+}
+
+.navbar__menu a{
+
+    padding:.65rem 1rem;
+
+    border-radius:12px;
+
+    transition:.25s;
+
+}
+
+.navbar__menu a:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.navbar__menu a.active{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.navbar__menu a.active::after{
+    display:none;
+}
+
+.navbar__menu a {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.navbar__menu a i {
+  font-size: .95rem;
+}
