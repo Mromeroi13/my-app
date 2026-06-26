@@ -99,11 +99,11 @@ export class RegisterComponent {
     }
 
       this.toast.success(
-        'Cuenta creada correctamente'
+        'Te hemos enviado un correo para verificar tu cuenta.'
       );
 
       setTimeout(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       }, 1500);
 
     } catch (err) {

@@ -187,7 +187,7 @@
 
             </th>
 
-            <th>
+            <th class="actions-column">
               Acciones
             </th>
 
@@ -234,17 +234,23 @@
                 <div class="actions">
 
                   <button
-                    class="btn-edit"
-                    (click)="openEditModal(user)">
+                    type="button"
+                    class="icon-btn edit"
+                    (click)="openEditModal(user)"
+                    title="Editar usuario">
 
-                    Editar
+                    <i class="fas fa-user-pen"></i>
+
                   </button>
 
                   <button
-                    class="btn-delete"
-                    (click)="deleteUser(user)">
+                    type="button"
+                    class="icon-btn delete"
+                    (click)="deleteUser(user)"
+                    title="Eliminar usuario">
 
-                    Eliminar
+                    <i class="fas fa-trash-alt"></i>
+
                   </button>
 
                 </div>

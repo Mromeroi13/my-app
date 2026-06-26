@@ -27,7 +27,8 @@ export class AuthService {
       email,
       password,
       options: {
-        data: profile
+        data: profile,
+        emailRedirectTo: window.location.origin
       }
     });
   }
@@ -76,6 +77,14 @@ export class AuthService {
   async updatePassword(password: string) {
     return await supabase.auth.updateUser({
       password
+    });
+  }
+
+  // Método para reenviar la confirmación del correo
+  async resendConfirmationEmail(email: string) {
+    return await supabase.auth.resend({
+      type: 'signup',
+      email
     });
   }
 

@@ -40,15 +40,25 @@ export class LoginComponent {
 
   // Método para iniciar sesión
   async login(): Promise<void> {
-    this.loading = true;
+      this.loading = true;
 
-    try {
-      const { error } = await this.auth.signIn(this.email, this.password);
+      try {
+        const { error } = await this.auth.signIn(this.email, this.password);
 
-      if (error) {
-        this.toast.error('Email o contraseña incorrectos');
-        return;
-      }
+        if (error) {
+
+    if (
+      error.message.toLowerCase().includes('email not confirmed')
+    ) {
+      this.toast.error(
+        'Debes verificar tu email antes de iniciar sesión.'
+      );
+      return;
+    }
+
+    this.toast.error('Email o contraseña incorrectos');
+    return;
+  }
 
       const profile = await this.profileService.loadProfile();
 
@@ -73,29 +83,68 @@ export class LoginComponent {
 
   async resetPassword(): Promise<void> {
 
-  if (!this.email) {
-    this.toast.error('Introduce tu email para resetear la contraseña');
-    return;
-  }
-
-  try {
-
-    const { error } = await this.auth.resetPassword(this.email);
-
-    if (error) {
-      this.toast.error('No se pudo enviar el correo');
+    if (!this.email) {
+      this.toast.error('Introduce tu email para resetear la contraseña');
       return;
     }
 
-    this.toast.success(
-      'Te hemos enviado un correo para restablecer tu contraseña'
-    );
+    try {
 
-  } catch (error) {
+      const { error } = await this.auth.resetPassword(this.email);
 
-    console.error(error);
-    this.toast.error('Ha ocurrido un error');
+      if (error) {
+        this.toast.error('No se pudo enviar el correo');
+        return;
+      }
+
+      this.toast.success(
+        'Te hemos enviado un correo para restablecer tu contraseña'
+      );
+
+    } catch (error) {
+
+      console.error(error);
+      this.toast.error('Ha ocurrido un error');
+
+    }
+  }
+
+  async resendConfirmation(): Promise<void> {
+
+    if (!this.email) {
+      this.toast.error(
+        'Introduce tu email primero'
+      );
+      return;
+    }
+
+    try {
+
+      const { error } =
+        await this.auth.resendConfirmationEmail(this.email);
+
+      if (error) {
+        this.toast.error(
+          'No se pudo reenviar el correo'
+        );
+        return;
+      }
+
+      this.toast.success(
+        'Correo de verificación reenviado'
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      this.toast.error(
+        'Ha ocurrido un error'
+      );
+
+    }
 
   }
-}
+
+
 }

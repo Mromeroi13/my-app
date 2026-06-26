@@ -354,3 +354,25 @@
     text-decoration: underline;
   }
 }
+
+.resend-confirmation {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.resend-link {
+  background: transparent;
+  border: none;
+  color: #93c5fd;
+  cursor: pointer;
+  font-size: .9rem;
+  padding: 0;
+
+  transition: .25s;
+
+  &:hover {
+    color: white;
+    text-decoration: underline;
+  }
+}
