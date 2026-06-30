@@ -67,28 +67,49 @@
         </a>
       </li>
 
-      <li>
-        <a
-          routerLink="/contacto"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-        >
-          Contacto
+      <li class="navbar__submenu">
+        <a (click)="toggleSubmenu()" class="pointer">
+          <i class="fas fa-cog"></i>
+          <i
+            class="fas"
+            [class.fa-chevron-down]="!submenuOpen"
+            [class.fa-chevron-up]="submenuOpen">
+          </i>
         </a>
+
+        <ul
+          class="navbar__submenu-list"
+          [class.navbar__submenu-list--open]="submenuOpen">
+
+              @if (profileService.profile()?.role === 'admin') {
+                <li>
+                  <a
+                    routerLink="/dashboard/usuarios"
+                    routerLinkActive="active"
+                    (click)="closeMenu()">
+
+                    <i class="fas fa-users"></i>
+
+                  </a>
+                </li>
+              }
+
+          <li>
+            <a routerLink="/soporte" (click)="closeMenu()">
+              Soporte
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/faq" (click)="closeMenu()">
+              FAQ
+            </a>
+          </li>
+
+        </ul>
       </li>
 
-      @if (profileService.profile()?.role === 'admin') {
-        <li>
-          <a
-            routerLink="/dashboard/usuarios"
-            routerLinkActive="active"
-            (click)="closeMenu()">
 
-            <i class="fas fa-users"></i>
-
-          </a>
-        </li>
-      }
 
       <li>
         <a

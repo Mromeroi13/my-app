@@ -30,6 +30,8 @@ export class NavbarComponent {
 
   showProfileModal = false; // Variable para ver el modal
 
+  submenuOpen = false; // Variable para ver el submenu
+
   constructor(
     public profileService: ProfileService,
     private authService: AuthService,
@@ -46,6 +48,10 @@ export class NavbarComponent {
     this.showProfileModal = false;
   }
 
+  // Función para abrir el submenú
+  toggleSubmenu() {
+    this.submenuOpen = !this.submenuOpen;
+  }
 
   // Función para alternar el estado del menú
   toggleMenu(): void {
