@@ -1,0 +1,369 @@
+<div class="tasks-container">
+
+  <h1>Configuración de Tareas</h1>
+
+  <!-- Buscador -->
+  <div class="table-header">
+
+    <input
+      type="text"
+      placeholder="Buscar tarea..."
+      [ngModel]="search()"
+      (ngModelChange)="onSearch($event)"
+    />
+
+  </div>
+
+  <!-- Card -->
+  <div class="table-card">
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Color</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+      <tbody>
+
+        @for(task of tasks(); track task.id){
+
+          <tr>
+
+            <td>{{ task.name }}</td>
+
+            <td>
+              <div
+                class="color"
+                [style.background]="task.color">
+              </div>
+            </td>
+
+            <td class="actions">
+
+              <button
+                class="btn-edit"
+                (click)="openEdit(task)">
+                <i class="fas fa-pen"></i>
+                Editar
+              </button>
+
+              <button
+                class="btn-delete"
+                (click)="openDeleteModal(task)">
+                <i class="fas fa-trash"></i>
+                Eliminar
+              </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+      <div class="pagination-container">
+
+  <button
+    class="page-btn"
+    [disabled]="currentPage() === 1"
+    (click)="goToPage(1)">
+
+    «
+
+  </button>
+
+  <button
+    class="page-btn"
+    [disabled]="currentPage() === 1"
+    (click)="previousPage()">
+
+    ‹
+
+  </button>
+
+  @for(page of visiblePages(); track page){
+
+    <button
+      class="page-btn"
+      [class.active]="page === currentPage()"
+      (click)="goToPage(page)">
+
+      {{ page }}
+
+    </button>
+
+  }
+
+  <button
+    class="page-btn"
+    [disabled]="currentPage() === totalPages()"
+    (click)="nextPage()">
+
+    ›
+
+  </button>
+
+  <button
+    class="page-btn"
+    [disabled]="currentPage() === totalPages()"
+    (click)="goToPage(totalPages())">
+
+    »
+
+  </button>
+
+</div>
+
+  <!-- FAB -->
+
+  <button
+    class="fab"
+    (click)="showCreateModal.set(true)">
+
+    <i class="fas fa-plus"></i>
+
+  </button>
+
+
+  <!-- MODAL CREAR -->
+
+  @if(showCreateModal()){
+
+  <div class="modal-backdrop">
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h2>Nueva tarea</h2>
+
+        <button
+          class="modal-close"
+          (click)="closeCreateModal()">
+          <i class="fas fa-times"></i>
+        </button>
+
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <div class="modal-body">
+
+        <div class="form-group">
+          <label>Nombre de la tarea</label>
+
+          <input
+            type="text"
+            [(ngModel)]="newTaskName"
+            (ngModelChange)="errorTaskName.set('')"
+            placeholder="Nombre Tarea...">
+
+              @if(errorTaskName()){
+                <small class="error">{{ errorTaskName() }}</small>
+              }
+        </div>
+
+        <div class="form-group">
+          <label>Elige un color para la tarea</label>
+
+          <div class="color-pop">
+
+            <button
+              type="button"
+              class="color-btn"
+              [style.background]="newTaskColor"
+              (click)="colorInput.click()">
+            </button>
+
+            <input
+              #colorInput
+              type="color"
+              [(ngModel)]="newTaskColor"
+              class="hidden-color-input">
+
+          </div>
+        </div>
+
+      </div>
+        
+      <div class="modal-divider"></div>
+
+      <div class="modal-actions">
+
+        <button
+          class="btn-secondary"
+          (click)="closeCreateModal()">
+          Cancelar
+        </button>
+
+        <button
+          class="btn-primary"
+          (click)="validateAndCreateTask()">
+          Guardar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  }
+
+
+  <!-- MODAL EDITAR -->
+
+  @if(editingTask){
+
+  <div class="modal-backdrop">
+
+    <div class="modal">
+      
+      <div class="modal-header">
+
+          <h2>Editar tarea</h2>
+
+          <button
+            class="modal-close"
+            (click)="cancelEdit()">
+
+            <i class="fas fa-times"></i>
+
+          </button>
+        </div>
+
+        <div class="modal-divider"></div>
+
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Nombre de la tarea</label>
+
+            <input
+              type="text"
+              placeholder="Escribe el nombre..."
+              (ngModelChange)="errorTaskName.set('')"
+              [(ngModel)]="editingTask.name">
+
+              @if(errorTaskName()){
+                <small class="error">{{ errorTaskName() }}</small>
+              }
+          </div>
+
+          <div class="form-group">
+            <div class="form-group">
+            <span class="color-text">Color de la tarea</span>
+
+              <div class="color-pop">
+
+                <button
+                  type="button"
+                  class="color-btn"
+                  [style.background]="editingTask.color"
+                  (click)="editColorInput.click()">
+                </button>
+
+                <input
+                  #editColorInput
+                  type="color"
+                  [(ngModel)]="editingTask.color"
+                  class="hidden-color-input">
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      <div class="modal-divider"></div>
+
+      <div class="modal-actions">
+
+        <button
+          class="btn-secondary"
+          (click)="cancelEdit()">
+
+          Cancelar
+
+        </button>
+
+        <button
+          class="btn-primary"
+          (click)="validateAndEditTask()">
+
+          Guardar
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  }
+
+</div>
+
+@if(deleteTaskModal()){
+
+<div class="modal-backdrop">
+
+  <div class="modal delete-modal">
+
+    <div class="delete-icon">
+
+      <i class="fas fa-triangle-exclamation"></i>
+
+    </div>
+
+    <h2>Eliminar tarea</h2>
+
+    <p>
+
+      ¿Seguro que quieres eliminar la tarea
+
+      <strong>"{{deleteTaskModal()?.name}}"</strong>?
+
+    </p>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-secondary"
+        (click)="deleteTaskModal.set(null)">
+
+        Cancelar
+
+      </button>
+
+      <button
+        class="btn-delete"
+        (click)="confirmDelete()">
+
+        Eliminar
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+}

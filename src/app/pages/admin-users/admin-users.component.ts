@@ -13,7 +13,6 @@ import { AdminUsersService } from '../../core/services/admin-users.service';
 import { AdminUser } from '../../core/models/admin-user.model';
 import { UserFilters } from '../../core/models/user-filters.model';
 import { UserRole } from '../../core/models/user-role.enum';
-import { ProfileService } from '../../core/services/profile.service';
 
 import { HotToastService } from '@ngxpert/hot-toast';
 
@@ -22,7 +21,7 @@ import { HotToastService } from '@ngxpert/hot-toast';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.scss']
@@ -132,6 +131,7 @@ export class AdminUsersComponent implements OnInit {
       const result =
         await this.adminUsersService.getUsers(
           this.currentPage(),
+          this.pageSize,
           this.filters,
           this.sortField,
           this.ascending

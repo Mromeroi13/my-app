@@ -9,8 +9,6 @@ import { UserFilters } from '../models/user-filters.model';
 })
 export class AdminUsersService {
 
-  private readonly PAGE_SIZE = 10;
-
   constructor() {}
 
   /**
@@ -18,6 +16,7 @@ export class AdminUsersService {
    */
   async getUsers(
     page: number,
+    pageSize: number,
     filters?: UserFilters,
     sortField: 'email' | 'created_at' | 'full_name' = 'created_at',
     ascending = false
@@ -26,8 +25,8 @@ export class AdminUsersService {
     total: number;
   }> {
 
-    const from = (page - 1) * this.PAGE_SIZE;
-    const to = from + this.PAGE_SIZE - 1;
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
 
     let query = supabase
       .from('profiles')

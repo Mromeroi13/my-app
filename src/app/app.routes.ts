@@ -7,6 +7,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { InicioComponent } from './pages/inicio/inicio.component';
 import {AdminUsersComponent } from './pages/admin-users/admin-users.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
 
 
 import { roleGuard } from './core/guards/role.guard';
@@ -49,6 +50,15 @@ export const routes: Routes = [
       {
         path: 'usuarios',
         component: AdminUsersComponent,
+        canActivate: [roleGuard], // Protege la ruta 'usuarios' para que solo usuarios con el rol 'admin' puedan acceder
+        data: {
+          roles: ['admin']
+        }
+      },
+
+      {
+        path: 'tasks',
+        component: TasksComponent,
         canActivate: [roleGuard], // Protege la ruta 'usuarios' para que solo usuarios con el rol 'admin' puedan acceder
         data: {
           roles: ['admin']

@@ -93,12 +93,18 @@
                   </a>
                 </li>
               }
+              @if (profileService.profile()?.role === 'admin') {
+                <li>
+                  <a
+                    routerLink="/dashboard/tasks"
+                    routerLinkActive="active"
+                    (click)="closeMenu()">
 
-          <li>
-            <a routerLink="/soporte" (click)="closeMenu()">
-              Soporte
-            </a>
-          </li>
+                    <i class="fas fa-list-check"></i>
+                    
+                  </a>
+                </li>
+              }
 
           <li>
             <a routerLink="/faq" (click)="closeMenu()">

@@ -61,6 +61,7 @@ export class NavbarComponent {
   // Función para cerrar el menú
   closeMenu(): void {
     this.menuOpen = false;
+    this.submenuOpen = false;
   }
 
   // Función para cerrar la sesión del usuario
